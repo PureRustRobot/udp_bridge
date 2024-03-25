@@ -1,0 +1,12 @@
+[package]
+name = "udp_bridge"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+zenoh = "0.7.0-rc"
+prr_msgs = {git = "https://github.com/PureRustRobot/prr_msgs.git"}
+prr_utils = {git = "https://github.com/PureRustRobot/prr_utils.git"}
+async-std = {version = "1.12.0", features = ["attributes"]}
