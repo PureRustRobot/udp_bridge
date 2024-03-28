@@ -6,7 +6,7 @@ use zenoh::{
 use prr_msgs::msg::*;
 use prr_utils::logger;
 
-use async_std::net::UdpSocket;
+use std::net::UdpSocket;
 
 pub async fn wheel_bridge(
     name:&str,
@@ -20,7 +20,7 @@ pub async fn wheel_bridge(
 
     let subscriber = session.declare_subscriber(sub_topic).res().await.unwrap();
 
-    let sock = UdpSocket::bind(local_addr).await.unwrap();
+    let sock = UdpSocket::bind(local_addr).unwrap();
 
     logger::log_info(name, format!("Start {} sub_topic:{}, local:{}, remote:{}", name, sub_topic, local_addr, remote_addr));
 
@@ -29,7 +29,7 @@ pub async fn wheel_bridge(
 
         let get_data = Wheel::deserialize(sub.value.to_string());
 
-        match sock.send_to(Wheel::serialize(&get_data).as_bytes(), remote_addr).await {
+        match sock.send_to(Wheel::serialize(&get_data).as_bytes(), remote_addr) {
             Ok(_)=>{
                 if enable_debug
                 {                
@@ -55,7 +55,7 @@ pub async fn one_motor_bridge(
 
     let subscriber = session.declare_subscriber(sub_topic).res().await.unwrap();
 
-    let sock = UdpSocket::bind(local_addr).await.unwrap();
+    let sock = UdpSocket::bind(local_addr).unwrap();
 
     logger::log_info(name, format!("Start {} sub_topic:{}, local:{}, remote:{}", name, sub_topic, local_addr, remote_addr));
 
@@ -64,7 +64,7 @@ pub async fn one_motor_bridge(
 
         let get_data = Motor::deserialize(sub.value.to_string());
 
-        match sock.send_to(Motor::serialize(&get_data).as_bytes(), remote_addr).await {
+        match sock.send_to(Motor::serialize(&get_data).as_bytes(), remote_addr) {
             Ok(_)=>{
                 if enable_debug
                 {                
